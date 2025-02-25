@@ -27,8 +27,8 @@ class SurrealProvider {
 			});
 			await this.db.connect('indxdb://demo');
 			await this.db.use({
-				namespace: 'demo',
-				database: 'demo'
+				namespace: 'zbranch',
+				database: 'test'
 			});
 			console.log("SurrealDB's status:", this.db.status);
 		} catch (error) {

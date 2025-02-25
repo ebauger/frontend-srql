@@ -3,9 +3,6 @@
 	import { RecordId } from 'surrealdb';
 	import { onMount } from 'svelte';
 
-	const surrealProvider = getSurrealProvider();
-	const db = surrealProvider.db;
-
 	type UserInput = {
 		email: string;
 		name: string;
@@ -23,6 +20,12 @@
 
 	onMount(async () => {
 		try {
+			const surrealProvider = getSurrealProvider();
+			await surrealProvider.connect();
+			const db = surrealProvider.db;
+			if (!db) {
+				throw new Error('Database connection not established');
+			}
 			// Create the user
 			const userData: UserInput = {
 				email: 'user@example.com',
