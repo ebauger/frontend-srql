@@ -1,8 +1,11 @@
 <script lang="ts">
 	import '../app.css';
-	import { setSurrealProvider } from '$lib/SurrealProvider.svelte';
+	import { setDBProvider } from '$lib/db.svelte';
+	import { browser } from '$app/environment';
 
-	setSurrealProvider();
+	if (browser) {
+		setDBProvider();
+	}
 	let { children } = $props();
 </script>
 

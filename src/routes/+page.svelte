@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { getSurrealProvider } from '$lib/SurrealProvider.svelte';
+	import { DBProvider } from '$lib/DBProvider';
+	import { getDBProvider, withDB } from '$lib/db.svelte';
 	import { RecordId } from 'surrealdb';
 	import { onMount } from 'svelte';
-
-	const surrealProvider = getSurrealProvider();
-	const db = surrealProvider.db;
 
 	type UserInput = {
 		email: string;
@@ -23,14 +21,18 @@
 
 	onMount(async () => {
 		try {
-			// Create the user
-			const userData: UserInput = {
-				email: 'user@example.com',
-				name: 'Auger'
-			};
+			// Use the withDB helper function to ensure connection
+			const result = await withDB(async (db) => {
+				// Create the user
+				const userData: UserInput = {
+					email: 'user@example.com',
+					name: 'Auger'
+				};
 
-			// Create and get the result
-			const result = await db?.create('user', userData);
+				// Create and get the result
+				return db.create('user', userData);
+			});
+
 			console.log('User created:', result);
 
 			// SurrealDB returns an array, get the first item
